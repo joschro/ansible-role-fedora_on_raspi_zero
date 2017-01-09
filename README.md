@@ -13,7 +13,7 @@ Requirements
 5. Set new password: passwd
 6. Note IP address of eth0: <ip add sh>
 7. Run either locally or remote via SSH: dnf install ansible git
-8. Run: git clone https://github.com/joschro/ansible
+8. Run: git clone https://github.com/joschro/ansible-role-fedora_on_raspi_zero
 
 Role Variables
 --------------
