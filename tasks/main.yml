@@ -1,0 +1,39 @@
+---
+# tasks file for fedora_on_raspi_zero
+
+- name: Update all packages
+  yum: name=* state=latest
+  tags: packages
+  run_once: true
+
+- name: Install specific packages
+  yum: name={{ item }} state=present
+  with_items:
+   - kbd
+   - vim
+   - parted
+   - bridge-utils
+   - chrony
+  tags: packages
+  run_once: true
+
+- name: Start the chrony service
+  service: name=chronyd state=started enabled=yes
+  tags: packages
+  run_once: true
+
+
+#- name: Resize filesystem to SD card boundaries
+- name: Resize / partition
+  file: path=/.rootfs-repartition state=touch
+  tags: partition
+  run_once: true
+
+# reboot system to make resized partition available
+- name: Reboot RedHat/CentOS 7 systems
+  shell: sleep 5 && shutdown -r now
+  when: (ansible_distribution == "RedHat" and ansible_distribution_major_version == "7")
+  async: 1
+  poll: 0
+  tags: partition
+  ignore_errors: yes
